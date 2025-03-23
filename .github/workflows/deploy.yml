@@ -1,22 +1,42 @@
-- name: Install dependencies
-  run: npm install
-  working-directory: serverless-api
+name: CI/CD Lambda Deploy
 
-- name: Run tests
-  run: npm test
-  working-directory: serverless-api
+on:
+  push:
+    branches:
+      - main
 
-- name: Zip Lambda function
-  run: zip -r function.zip . -x "*.git*" "*.github*" "terraform/*"
-  working-directory: serverless-api
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-- name: Deploy to AWS Lambda
-  env:
-    AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_ID }}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
-    AWS_REGION: us-east-1
-  run: |
-    aws lambda update-function-code \
-      --function-name serverless_api \
-      --zip-file fileb://serverless-api/function.zip \
-      --region $AWS_REGION
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: serverless-api
+
+      - name: Run tests
+        run: npm test
+        working-directory: serverless-api
+
+      - name: Zip Lambda function
+        run: zip -r function.zip . -x "*.git*" "*.github*" "terraform/*"
+        working-directory: serverless-api
+
+      - name: Deploy to AWS Lambda
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+        run: |
+          aws lambda update-function-code \
+            --function-name serverless_api \
+            --zip-file fileb://serverless-api/function.zip \
+            --region $AWS_REGION
