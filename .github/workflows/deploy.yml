@@ -1,0 +1,56 @@
+name: CI/CD Lambda Deploy
+
+on:
+  push:
+    branches: [ main ]  # ou 'master' selon ta branche principale
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Récupère le code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Étape 2 : Installe Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Étape 3 : Installe les dépendances
+      - name: Install dependencies
+        run: npm install
+
+      # Étape 4 : (Optionnel) Lancer les tests
+      - name: Run tests
+        run: npm test
+
+      # Étape 5 : Créer l'archive ZIP
+      - name: Zip Lambda function
+        run: zip -r function.zip . -x "*.git*" "*.github*" "terraform/*"
+
+      # Étape 6 : Déployer sur AWS Lambda
+      - name: Deploy to AWS Lambda
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+          AWS_REGION: us-east-1
+        run: |
+          aws lambda update-function-code \
+            --function-name serverless_api \
+            --zip-file fileb://function.zip \
+            --region $AWS_REGION
+
+      # Étape 7 : (Optionnel) Terraform Apply
+      - name: Terraform Apply (optional)
+        if: false  # mets "true" si tu veux l’activer
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+          AWS_REGION: us-east-1
+        run: |
+          cd terraform || cd infra || cd .  # adapte selon ton dossier
+          terraform init
+          terraform apply -auto-approve
