@@ -22,10 +22,12 @@ jobs:
       # Étape 3 : Installe les dépendances
       - name: Install dependencies
         run: npm install
+        working-directory: serverless-api
 
       # Étape 4 : (Optionnel) Lancer les tests
       - name: Run tests
         run: npm test
+        working-directory: serverless-api
 
       # Étape 5 : Créer l'archive ZIP
       - name: Zip Lambda function
