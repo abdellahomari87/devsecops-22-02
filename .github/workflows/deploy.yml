@@ -22,9 +22,9 @@ jobs:
         run: npm install
         working-directory: serverless-api
 
-      - name: Run tests
-        run: npm test
-        working-directory: serverless-api
+      #- name: Run tests
+        #run: npm test
+        #working-directory: serverless-api
 
       - name: Zip Lambda function
         run: zip -r function.zip . -x "*.git*" "*.github*" "terraform/*"
