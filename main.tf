@@ -328,13 +328,13 @@ resource "aws_iam_role_policy_attachment" "role_attachment" {
   role       = aws_iam_role.lambda_s3_aurora.name
 }
 
-resource "aws_lambda_function" "serverless_api" {
-  function_name    = "serverless_api"
+resource "aws_lambda_function" "api_lambda" {
+  function_name    = "api_lambda"
   role             = aws_iam_role.lambda_s3_aurora.arn
   handler          = "index.handler"
   runtime          = "nodejs18.x"
-  filename         = "lambda/function.zip"
-  source_code_hash = filebase64sha256("lambda/function.zip")
+  filename         = "serverless-api/function.zip"
+  source_code_hash = filebase64sha256("serverless-api/function.zip")
 
   vpc_config {
     subnet_ids         = [for s in aws_subnet.private_subnet : s.id]
