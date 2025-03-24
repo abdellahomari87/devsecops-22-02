@@ -460,7 +460,7 @@ resource "aws_api_gateway_method" "any_any" {
 resource "aws_lambda_permission" "allow_api_gateway" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.serverless_api.function_name
+  function_name = aws_lambda_function.api_lambda.arn
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.api_gateway.execution_arn}/*/*"
 }
