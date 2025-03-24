@@ -229,7 +229,7 @@ resource "aws_iam_policy" "S3_policy" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_policy" "aurora_policy" {
-  name        = "aurora_policy"
+  name        = "aurora_policy_dev"
   description = "Policy to access aurora instance"
 
   policy = jsonencode({
