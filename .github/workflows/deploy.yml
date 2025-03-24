@@ -49,6 +49,6 @@ jobs:
           AWS_REGION: us-east-1
         run: |
           aws lambda update-function-code \
-            --function-name serverless_api \
+            --function-name api_lambda \
             --zip-file fileb://serverless-api/function.zip \
             --region $AWS_REGION
