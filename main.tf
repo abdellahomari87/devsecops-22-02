@@ -328,7 +328,7 @@ resource "aws_iam_role_policy_attachment" "role_attachment" {
   role       = aws_iam_role.lambda_s3_aurora.name
 }
 
-resource "aws_lambda_function" "api_lambda" {
+resource "aws_lambda_function" "serverless_api" {
   function_name    = "serverless_api"
   role             = aws_iam_role.lambda_s3_aurora.arn
   handler          = "index.handler"
