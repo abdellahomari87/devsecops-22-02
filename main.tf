@@ -119,7 +119,10 @@ resource "aws_security_group" "lambda_sg" {
 # Create a DB subnet group
 resource "aws_db_subnet_group" "private_db_subnet_group" {
   name       = "private_db_subnet_group"
-  subnet_ids = [subnet-0ca25475194c2d4cd, subnet-0c2ea46a8fe6bfb77]
+  subnet_ids = [
+    "subnet-0ca25475194c2d4cd",
+    "subnet-0c2ea46a8fe6bfb77"
+  ]
 }
 
 resource "aws_kms_key" "aurora_kms_key" {
