@@ -120,8 +120,8 @@ resource "aws_security_group" "lambda_sg" {
 resource "aws_db_subnet_group" "private_db_subnet_group" {
   name       = "private_db_subnet_group"
   subnet_ids = [
-    "subnet-0ca25475194c2d4cd",
-    "subnet-0c2ea46a8fe6bfb77"
+    "subnet-0cc97d8546d78b566",
+    "subnet-017c5c3d3c024f197"
   ]
 }
 
