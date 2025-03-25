@@ -32,6 +32,16 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+      - name: Terraform Destroy (targeted)
+        run: |
+          terraform destroy -target=aws_db_subnet_group.private_db_subnet_group \
+                      -target=aws_iam_policy.S3_policy \
+                      -target=aws_iam_role.lambda_s3_aurora \
+                      -target=aws_iam_policy.lambda_eni_policy \
+                      -auto-approve
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
           
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
