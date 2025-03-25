@@ -29,6 +29,7 @@ jobs:
           terraform import aws_iam_policy.S3_policy arn:aws:iam::${{ secrets.aws_account_id }}:policy/WebAppS3
           terraform import aws_iam_role.lambda_s3_aurora lambda-s3
           terraform import aws_iam_policy.lambda_eni_policy arn:aws:iam::${{ secrets.aws_account_id }}:policy/eni_policy
+          terraform import aws_rds_cluster.aurora_cluster
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
